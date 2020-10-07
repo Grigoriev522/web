@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let students = (function(){
+            let studArr = [
+            {
+                firstName: "Егор",
+                secondName: "Григорьев",
+                age: 19,
+                avgMark: 7.4
+            },
+            {
+                firstName: "Петя",
+                secondName: "Петров",
+                age: 17,
+                avgMark: 7.1
+            },
+            {
+                firstName: "Иван",
+                secondName: "Иванов",
+                age: 18,
+                avgMark: 7.7
+            }
+            ];
+            const len = studArr.length;
+            let _createTable = (function(){
+                let table = document.createElement("table");
+                table.setAttribute("border",1);
+                document.body.appendChild(table);
+
+                let tr = document.createElement("tr");
+                let thArr = ["Имя","Фамилия","Возраст","Оценка"];
+                let objElem = ["firstName","secondName","age","avgMark"];
+                for(let i = 0; i < 4; i++){
+                    let th = document.createElement("th");
+                    th.innerHTML = thArr[i];
+                    tr.appendChild(th);
+                }
+                table.appendChild(tr);
+
+                for(let i = 0; i < len; i++){
+                    let tr = document.createElement("tr");
+                    for(let j = 0; j < 4; j++){
+                        let td = document.createElement("td");
+                        td.innerHTML = studArr[i][objElem[j]];
+                        tr.appendChild(td);
+                    }
+                    table.appendChild(tr);
+                }
+            })();
+            let calculateAvgMark = function(){
+                if (document.querySelectorAll("h1").length == 0){
+                    let table = document.querySelector("table");
+                    let avg = 0
+                    for(let i = 1; i < len + 1; i++){
+                        avg += +table.childNodes[i].lastChild.innerHTML;
+                    }
+                    avg /= len - 1;
+                    let h1 = document.createElement("h1");
+                    h1.innerHTML = "Средний балл: " + avg;
+                    document.body.appendChild(h1);
+                }
+            }
+
+            return {
+                len: len,
+                calculateAvgMark: calculateAvgMark,
+            }
+            
+        })();
+        
+        let btn = document.createElement("input");
+        btn.setAttribute("value", "Рассчитать средний балл");
+        btn.setAttribute("type", "button");
+        btn.style.margin = "20px";
+        btn.onclick = students.calculateAvgMark;
+        document.body.appendChild(btn);
+
+    </script>
+</body>
+</html>
