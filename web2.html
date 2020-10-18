@@ -19,7 +19,7 @@
                 firstName: "Петя",
                 secondName: "Петров",
                 age: 17,
-                avgMark: 7.1
+                avgMark: 7.9
             },
             {
                 firstName: "Иван",
@@ -61,9 +61,9 @@
                     for(let i = 1; i < len + 1; i++){
                         avg += +table.childNodes[i].lastChild.innerHTML;
                     }
-                    avg /= len - 1;
+                    avg /= len;
                     let h1 = document.createElement("h1");
-                    h1.innerHTML = "Средний балл: " + avg;
+                    h1.innerHTML = "Средний балл: " + avg.toFixed(2);
                     document.body.appendChild(h1);
                 }
             }
