@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="input">
+    <input type="button" value="calculate" id="button">
+    <h1></h1>
+    <script>
+        let btn = document.querySelector("#button");
+        btn.onclick = function(){
+            let input = document.querySelector("#input");
+            let strArr = input.value.split(" ");
+            let intArr = [];
+            let min = Number(strArr[0]);
+            let max = Number(strArr[0]);
+            let sum = 0;
+            for(let i = 0; i < strArr.length; i++){
+                intArr[i] = Number(strArr[i]);
+                sum += intArr[i];
+                if (intArr[i] < min) min = intArr[i];
+                if (intArr[i] > max) max = intArr[i];
+            }
+
+            for(let i = 0; i < intArr.length; i++){
+                for(let j = 0; j < intArr.length - i - 1; j++){
+                    if (intArr[j] > intArr[j+1]){
+                        let temp = intArr[j];
+                        intArr[j] = intArr[j+1];
+                        intArr[j+1] = temp;
+                    }
+                }
+            }
+           document.querySelector("h1").innerHTML = "Отсортированный массив: " + intArr.join(" ")  + "<br>" +
+           "Минимум: " + min + "<br>" + "Максимум: " + max + "<br>" + "Сумма: " + sum;
+        }
+    </script>
+</body>
+</html>
