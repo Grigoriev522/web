@@ -23,7 +23,7 @@ let students = (function(){
     ];
     let objElem = ["firstName","secondName","age","avgMark"];
     
-    let beruZaScheky = function(){
+    let getData = function(){
         
         let x = new XMLHttpRequest()
 
@@ -167,7 +167,7 @@ let students = (function(){
     return {
         calculateAvgMark: calculateAvgMark,
         addStudent: addStudent,
-        beruZaScheky: beruZaScheky
+        getData: getData
     }
     
 })();
@@ -181,4 +181,4 @@ calcButton.onclick = students.calculateAvgMark;
 document.body.appendChild(calcButton);
 addButton.onclick = students.addStudent;
 
-students.beruZaScheky();
+students.getData();
