@@ -1,30 +1,51 @@
 
 let students = (function(){
-    const x = new XMLHttpRequest();
-    x.open("GET", "govno.json", true);
+
     let studArr = [
-    {
-        firstName: "Егор",
-        secondName: "Григорьев",
-        age: 19,
-        avgMark: 7.4
-    },
-    {
-        firstName: "Петя",
-        secondName: "Петров",
-        age: 17,
-        avgMark: 7.9
-    },
-    {
-        firstName: "Иван",
-        secondName: "Иванов",
-        age: 18,
-        avgMark: 7.7
-    }
+    // {
+    //     firstName: "Егор",
+    //     secondName: "Григорьев",
+    //     age: 19,
+    //     avgMark: 7.4
+    // },
+    // {
+    //     firstName: "Петя",
+    //     secondName: "Петров",
+    //     age: 17,
+    //     avgMark: 7.9
+    // },
+    // {
+    //     firstName: "Иван",
+    //     secondName: "Иванов",
+    //     age: 18,
+    //     avgMark: 7.7
+    // }
     ];
     let objElem = ["firstName","secondName","age","avgMark"];
     
-    
+    let beruZaScheky = function(){
+        
+        let x = new XMLHttpRequest()
+
+        x.addEventListener('readystatechange', () => {
+            if(x.readyState === 4 && x.status === 200){
+                let data = JSON.parse(x.response)
+                for(let key of data) {
+                    studArr.push(key);
+                    
+                }
+                console.log(studArr); 
+                createTable();  
+            }else if(x.readyState === 4){
+                console.log('could not fetch the data')
+            }
+        })
+        
+        x.open('GET', 'students.json')
+        
+        x.send()
+    }
+
     let _createButtons = function(){
         for(let i = 0; i < studArr.length; i++){
             let cont = document.createElement("div");
@@ -146,7 +167,7 @@ let students = (function(){
     return {
         calculateAvgMark: calculateAvgMark,
         addStudent: addStudent,
-        createTable : createTable,
+        beruZaScheky: beruZaScheky
     }
     
 })();
@@ -159,4 +180,5 @@ calcButton.style.margin = "20px";
 calcButton.onclick = students.calculateAvgMark;
 document.body.appendChild(calcButton);
 addButton.onclick = students.addStudent;
-students.createTable();
+
+students.beruZaScheky();

@@ -1,0 +1,20 @@
+[
+    {
+        "firstName": "Егор",
+        "secondName": "Григорьев",
+        "age": 19,
+        "avgMark": 7.4
+    },
+    {
+        "firstName": "Петя",
+        "secondName": "Петров",
+        "age": 17,
+        "avgMark": 7.9
+    },
+    {
+        "firstName": "Иван",
+        "secondName": "Иванов",
+        "age": 18,
+        "avgMark": 7.7
+    }
+]
