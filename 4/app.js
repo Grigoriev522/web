@@ -1,26 +1,7 @@
 
 let students = (function(){
 
-    let studArr = [
-    // {
-    //     firstName: "Егор",
-    //     secondName: "Григорьев",
-    //     age: 19,
-    //     avgMark: 7.4
-    // },
-    // {
-    //     firstName: "Петя",
-    //     secondName: "Петров",
-    //     age: 17,
-    //     avgMark: 7.9
-    // },
-    // {
-    //     firstName: "Иван",
-    //     secondName: "Иванов",
-    //     age: 18,
-    //     avgMark: 7.7
-    // }
-    ];
+    let studArr = [];
     let objElem = ["firstName","secondName","age","avgMark"];
     
     let getData = function(){
@@ -30,18 +11,24 @@ let students = (function(){
         x.addEventListener('readystatechange', () => {
             if(x.readyState === 4 && x.status === 200){
                 let data = JSON.parse(x.response)
+                let obj = {};
                 for(let key of data) {
-                    studArr.push(key);
-                    
+                    if (key.name.split(' ').length == 2) {
+                        obj.firstName = key.name.split(' ')[0];
+                        obj.secondName = key.name.split(' ')[1];
+                        obj.age = Math.round(((Math.random() + 1) * 10));
+                        obj.avgMark = Math.round((Math.random() * 10) * 10) / 10;
+                        studArr.push(obj);
+                    }
+                    obj = {};
                 }
-                console.log(studArr); 
                 createTable();  
             }else if(x.readyState === 4){
                 console.log('could not fetch the data')
             }
         })
         
-        x.open('GET', 'students.json')
+        x.open('GET', 'https://jsonplaceholder.typicode.com/users') // здесь берём json
         
         x.send()
     }

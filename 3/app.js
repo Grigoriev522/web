@@ -1,7 +1,5 @@
 
 let students = (function(){
-    const x = new XMLHttpRequest();
-    x.open("GET", "govno.json", true);
     let studArr = [
     {
         firstName: "Егор",
@@ -147,6 +145,7 @@ let students = (function(){
         calculateAvgMark: calculateAvgMark,
         addStudent: addStudent,
         createTable : createTable,
+        studArr : studArr
     }
     
 })();
