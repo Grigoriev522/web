@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html ng-app="webApp">
+<head>
+<meta charset="utf-8">
+</head>
+<body ng-controller="bodyController">
+    <div class="page-header">
+        <h1>Список Студентов</h1>
+    </div>
+    <div class="panel">
+        <form ng-submit="addStudent(firstName, secondName, age, avgMark)">
+            <div class="form-inline">
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" ng-model="firstName" placeholder ="First Name" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" ng-model="secondName" placeholder="Second Name" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" ng-model="age" placeholder="Age" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" ng-model="avgMark" placeholder="Average Mark"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                        <button class="btn btn-default" type="submit" ng-disabled="edit">
+                            Добавить
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                        <button class="btn btn-default" type="button" ng-disabled="!edit" ng-click="stopEditStudent(firstName, secondName, age, avgMark)">
+                            Закончить Редактировать
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Возраст</th>
+                    <th>Оцена</th>
+                    <th>Удалить</th>
+                    <th>Редактировать</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in studArr">
+                    <td id="name">{{item.firstName}}</td>
+                    <td id="surname">{{item.secondName}}</td>
+                    <td id="age">{{item.age}}</td>
+                    <td id="score" class="avg-score">{{item.avgMark}}</td>
+                    <td>
+                        <button class="btn btn-default" ng-click="deleteStudent($index)" ng-disabled="edit">Удалить</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-default" ng-click="editStudent($index)">Редактировать</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            Средний балл:
+        <span>{{calculateAverageMark()}}</span>
+        </div>
+    </div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
+</body>
+</html>
