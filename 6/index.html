@@ -94,7 +94,12 @@
             students[this.state.index] = newStudent;
             this.setState({
                 index: -1,
-                students
+                students,
+                edit:false,
+                firstName: '',
+                secondName: '',
+                age: 0,
+                avgMark: 0
             })
         }
 
@@ -135,7 +140,7 @@
             
           return (
           <div>
-            <Table students={students} deleteStudent={this.deleteStudent} changeEditStatus={this.changeEditStatus}/>
+            <Table students={students} deleteStudent={this.deleteStudent} changeEditStatus={this.changeEditStatus} edit={this.state.edit}/>
             <form onSubmit={this.submitForm}>
                 <label>Имя</label>
                 <input id="name_input" type="text" value={this.state.firstName} onChange={this.onChangeInput} name="firstName"/>
@@ -173,7 +178,7 @@
                             <button type="button" onClick={() => props.changeEditStatus(index)}>Edit</button>    
                         </td>   
                         <td>
-                            <button onClick={() => props.deleteStudent(index)} type="button">Delete</button>
+                            <button onClick={props.edit ? () => {} : () => props.deleteStudent(index)} type="button">Delete</button>
                         </td>
                     </tr>
                 )
