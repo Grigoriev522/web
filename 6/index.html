@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Grigoriev Egor 6</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <div id="root"> </div>
+     
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
+    
+<script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                students: [],
+                lastId: 1,
+                firstName: '',
+                secondName: '', 
+                index: -1,
+                age: 0,
+                avgMark: 0,
+                edit: false
+            }
+
+            this.getData = this.getData.call(this);
+        }
+
+        getData = () => {
+            fetch('https://jsonplaceholder.typicode.com/users')
+            .then(response => response.json())
+            .then(data => {
+                let obj = {};
+                let students = [];
+                for(let key of data) {
+                    if (key.name.split(' ').length == 2) {
+                    obj.firstName = key.name.split(' ')[0];
+                    obj.secondName = key.name.split(' ')[1];
+                    obj.age = Math.round(((Math.random() + 1) * 10));
+                    obj.avgMark = Math.round((Math.random() * 10) * 10) / 10;
+                    obj.id = this.state.lastId++;
+                    students.push(obj);
+                }
+                obj = {};
+                }
+                this.setState({ students })
+            })
+            .catch(err => console.log(err));
+        }
+
+        deleteStudent = (index) => {
+            let students = this.state.students.slice();
+
+            students.splice(index, 1);
+
+            this.setState({ students });
+        }
+
+        resultAverageMark = () => {
+            let sum = 0;
+            for(let key of this.state.students) {
+                sum += +key.avgMark;
+            }
+
+            let total = Math.floor((sum / this.state.students.length) * 100) / 100;
+            return total;
+        }
+
+        addStudent = () => {
+            this.setState(state => {
+                const newStudent = {
+                        id: state.lastId++,
+                        firstName: state.firstName,
+                        secondName: state.secondName,
+                        age: state.age,
+                        avgMark: state.avgMark
+                        };
+                    state.students.push(newStudent);
+                return { students: state.students}
+            });
+        }
+
+        editStudent = () => {
+            let newStudent = {};
+            let students = this.state.students.slice();
+            newStudent.firstName = this.state.firstName;
+            newStudent.secondName = this.state.secondName;
+            newStudent.age = this.state.age;
+            newStudent.avgMark = this.state.avgMark;
+            students[this.state.index] = newStudent;
+            this.setState({
+                index: -1,
+                students
+            })
+        }
+
+        submitForm = (event) => {
+            event.preventDefault();
+
+            this.addStudent();
+
+            console.log(this.state.students);
+            this.setState({
+                firstName: '',
+                secondName: '',
+                age: 0,
+                avgMark: 0
+            })
+        }
+
+        changeEditStatus = (index) => {
+            let student = this.state.students[index];
+            this.setState({
+                edit: true,
+                index: index,
+                firstName: student.firstName,
+                secondName: student.secondName,
+                age: student.age,
+                avgMark: student.avgMark
+            })
+        }
+
+        onChangeInput = (event) => {
+            this.setState({
+                [event.target.name]: event.target.value
+            })
+        }
+
+        render() {
+            const { students } = this.state;
+            
+          return (
+          <div>
+            <Table students={students} deleteStudent={this.deleteStudent} changeEditStatus={this.changeEditStatus}/>
+            <form onSubmit={this.submitForm}>
+                <label>Имя</label>
+                <input id="name_input" type="text" value={this.state.firstName} onChange={this.onChangeInput} name="firstName"/>
+                <br />
+                <label>фамилия</label>
+                <input id="sername_input" type="text" value={this.state.secondName} onChange={this.onChangeInput} name="secondName"/>
+                <br />
+                <label>Возраст</label>
+                <input id="age_input" type="text" value={this.state.age} onChange={this.onChangeInput} name="age"/>
+                <br />
+                <label>Средняя оценка</label>
+                <input id="avg_mark_input" type="text" value={this.state.avgMark} onChange={this.onChangeInput} name="avgMark"/>
+                <br />
+                <input type="submit" id="add_button" value="Добавить" disabled={this.state.edit ? true : false}/>
+                <input type="button" id="edit_button" value="Закончить Редактирование" disabled={this.state.edit ? false : true} onClick={this.editStudent}/>
+            </form>
+            <span>{this.resultAverageMark()}</span>
+            
+          </div>
+          );
+        }
+      }
+
+      const Table = (props) => {
+
+        const drawStudents = () => {
+            return props.students.map((student, index) => {
+                return (
+                    <tr key={student.id} className={ index % 2 ? 'one' : 'two'}>
+                        <td>{student.firstName}</td>
+                        <td>{student.secondName}</td>   
+                        <td>{student.age}</td>   
+                        <td className={student.avgMark < 7 ? 'debil' : ''}>{student.avgMark}</td>   
+                        <td>
+                            <button type="button" onClick={() => props.changeEditStatus(index)}>Edit</button>    
+                        </td>   
+                        <td>
+                            <button onClick={() => props.deleteStudent(index)} type="button">Delete</button>
+                        </td>
+                    </tr>
+                )
+            })
+        }
+
+          return (
+            <table>
+                <thead>
+                    <tr>
+                        <td>First Name</td>
+                        <td>Second Name</td>
+                        <td>Age</td>
+                        <td>Average Mark</td>
+                        <td>Edit</td>
+                        <td>Delete</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        drawStudents()
+                    }
+                </tbody>
+            </table>
+          )
+      }
+    
+      ReactDOM.render(
+        <App />,
+        document.getElementById("root")
+      )
+</script>
+</body>
+</html>
